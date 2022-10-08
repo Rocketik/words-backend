@@ -1,0 +1,24 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model words {
+  id          Int        @id @default(autoincrement())
+  word_en     String     @db.VarChar(127)
+  word_am     String     @db.VarChar(127)
+  category_id Int
+  categorie   Categories @relation(fields: [category_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+}
+
+model Categories {
+  id    Int     @id @default(autoincrement())
+  title String  @db.VarChar(127)
+  words words[]
+
+  @@map("categories")
+}
